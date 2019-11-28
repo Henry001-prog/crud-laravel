@@ -3,12 +3,12 @@
 @section('content')
 @if ($message = Session::get('success'))
     <div class="alert alert-success mt-2">
-        <p>{{ $message }}</p>
+        <span>{{ $message }}</span>
     </div>
 @endif
 @if ($message = Session::get('error'))
     <div class="alert alert-danger mt-2">
-        <p>{{ $message }}</p>
+        <span>{{ $message }}</span>
     </div>
 @endif
 <div class="row">
