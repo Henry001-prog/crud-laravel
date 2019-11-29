@@ -14,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -35,7 +36,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+        ]);
+
+        Product::create($request->all());
+
+        return redirect()->route('product.index')->with('success', 'Produto Criado!');
     }
 
     /**
@@ -46,7 +54,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('products.show', compact($product));
     }
 
     /**
@@ -57,7 +65,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $p = Product::find($product->id);
+
+        return view('products.edit', compact('p'));
     }
 
     /**
@@ -67,9 +77,17 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+        ]);
+
+        $p = Product::find($id);
+        $p->update($request->all());
+
+        return redirect()->route('product.index')->with('success', 'Produto Modificado!');
     }
 
     /**
@@ -80,6 +98,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $p = Product::find($product->id);
+        $p->delete();
+        return redirect()->route('product.index')->with('success', 'Produto Excluído!');
     }
 }
